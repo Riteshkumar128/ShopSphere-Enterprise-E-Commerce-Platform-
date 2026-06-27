@@ -11,7 +11,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = store.getState().auth.accessToken;
   if (token) {
-    config.headers.Authorization = `******;
+    config.headers.Authorization = 'Bearer ' + token;
   }
   return config;
 });
@@ -28,9 +28,9 @@ api.interceptors.response.use(
 
       error.config._retry = true;
       try {
-        const { data } = await axios.post(`${apiBase}/auth/refresh`, { refreshToken });
+        const { data } = await axios.post(apiBase + '/auth/refresh', { refreshToken });
         store.dispatch(setAccessToken(data.accessToken));
-        error.config.headers.Authorization = `******;
+        error.config.headers.Authorization = 'Bearer ' + data.accessToken;
         return api(error.config);
       } catch (_err) {
         store.dispatch(logout());

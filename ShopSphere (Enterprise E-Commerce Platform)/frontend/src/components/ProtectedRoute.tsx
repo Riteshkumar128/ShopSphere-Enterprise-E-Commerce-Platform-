@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../app/hooks';
 
@@ -5,7 +6,7 @@ export default function ProtectedRoute({
   children,
   roles,
 }: {
-  children: JSX.Element;
+  children: ReactElement;
   roles?: Array<'customer' | 'seller' | 'admin' | 'super_admin'>;
 }) {
   const { user } = useAppSelector((s) => s.auth);
